@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <!-- meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    
+    <!-- angular.js, jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- angular directives -->
+    <script src="angular/HeaderDirective.js"></script>
+
+    
+    <title>Hello World</title>
+    
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="site.css"/>
+    
+    <!-- matrix library -->
+    <script src="javascript/WebGL/glMatrix-0.9.5.min.js"></script>
+   
+    
+    <style>
+        #mycanvas {
+            width: 500px;
+            height: 500px;
+            overflow: hidden;
+        }
+    </style>
+    
+    <!-- ace editor -->
+    <style>
+    .codeEditor {
+      height: 300px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    </style>
+    
+    <!-- all of our WebGL scripts -->
+    <script id="shader-fs" src="javascript/WebGL/lesson4/fragmentShader.js"></script>
+    <script id="shader-vs" src="javascript/WebGL/lesson4/vertexShader.js"></script>
+    <script src="javascript/WebGL/lesson4/initGL.js"></script>
+    <script src="javascript/WebGL/lesson4/getShader.js"></script>
+    <script src="javascript/WebGL/lesson4/initShaders.js"></script>
+    <script src="javascript/WebGL/lesson4/initBuffers.js"></script>
+    <script src="javascript/WebGL/lesson4/drawScene.js"></script>
+    <script src="javascript/WebGL/lesson4/main.js"></script>
+    
+</head>
+<!-- initially run the WebGL program so it isn't blank when we
+    load the page -->
+<body ng-app="mysite" onload="webGLStart()">
+    
+    <!-- defined in angular/HeaderDirective.js -->
+    <site-header></site-header>
+
+    <!-- canvas -->
+    <div style="width:500px; height:500px; margin-left: auto; margin-right: auto;">
+        <canvas id="mycanvas" width="500" height="500"></canvas>
+    </div>
+    
+    <!-- panel throught the different files -->
+    <div>
+        <ul class="nav nav-tabs" role="tablist" style="margin-top:10px;">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#mainJSEmbed">main.js</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#initGLJSEmbed">initGL.js</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#getShaderJSEmbed">getShader.js</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#initShadersJSEmbed">initShaders.js</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#vertexShaderJSEmbed">vertexShader.js</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#fragmentShaderJSEmbed">fragmentShader.js</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#initBuffersJSEmbed">initBuffers.js</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#drawSceneJSEmbed">drawScene.js</a></li>
+        </ul>
+    </div>
+    
+    <!-- data for the panel - where the code editors go -->
+    <div class="tab-content" style="margin-left:20px;margin-right:20px;">
+        <div id="mainJSEmbed" class="tab-pane active codeEditor"></div>
+        <div id="initGLJSEmbed" class="tab-pane fade codeEditor"></div>
+        <div id="getShaderJSEmbed" class="tab-pane fade codeEditor"></div>
+        <div id="initShadersJSEmbed" class="tab-pane fade codeEditor"></div>
+        <div id="vertexShaderJSEmbed" class="tab-pane fade codeEditor"></div>
+        <div id="fragmentShaderJSEmbed" class="tab-pane fade codeEditor"></div>
+        <div id="initBuffersJSEmbed" class="tab-pane fade codeEditor"></div>
+        <div id="drawSceneJSEmbed" class="tab-pane fade codeEditor"></div>
+    </div>
+    
+    <!-- run button and acknowledgement -->
+    <button class="btn btn-primary" onclick="runGL()" style="margin:10px;">Run</button>
+     <p style="line-height: 20px; margin-top: 20px;">Interactive WebGL examples with code from 
+        <a href="http://learningwebgl.com/">http://learningwebgl.com/</a>
+    </p>
+    
+    <!-- codemirror editor area -->
+    <div id="editorArea1" class="codeEditor"></div>
+    
+    <!-- run button -->
+    <button class="btn btn-primary" id="runButton">Run</button>
+    
+    <script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        /* Array of ace instances */
+        var editors = [];
+        /* Array of div ids for each editor */
+        var ids = [
+            "mainJSEmbed",
+            "initGLJSEmbed", 
+            "getShaderJSEmbed", 
+            "initShadersJSEmbed", 
+            "vertexShaderJSEmbed",
+            "fragmentShaderJSEmbed",
+            "initBuffersJSEmbed",
+            "drawSceneJSEmbed"
+        ];
+        /* Array of source files for each id */
+        var sources = [
+            "javascript/WebGL/lesson4/main.js",
+            "javascript/WebGL/lesson4/initGL.js",
+            "javascript/WebGL/lesson4/getShader.js",
+            "javascript/WebGL/lesson4/initShaders.js",
+            "javascript/WebGL/lesson4/vertexShader.js",
+            "javascript/WebGL/lesson4/fragmentShader.js",
+            "javascript/WebGL/lesson4/initBuffers.js",
+            "javascript/WebGL/lesson4/drawScene.js"
+        ]; 
+
+        /* create each instance */
+        for(var i=0; i<ids.length; i++) {
+            editors.push( ace.edit(ids[i]) );
+            editors[i].setTheme("ace/theme/monokai");
+            editors[i].getSession().setMode("ace/mode/javascript");
+            document.getElementById(ids[i]).style.fontSize="14px";
+        }
+
+        /* set each editors file contents */
+        editors.forEach(function(editor, index) {
+
+            //var dataHolder=""; // placeholder test
+
+            /* load text into the editor */
+            jQuery.get(sources[index], function(data, status){
+                console.log('file contents:');
+                console.log(data);
+                //dataHolder = data;
+
+                editor.setValue(data);
+                editor.resize();
+      
+                /* loading the text selects it all for some reason */
+                editor.getSession().selection.clearSelection();
+            });
+        });
+      
+    </script>
+    
+    <!-- onclick button run -->
+    <script>
+        var runGL = function() {
+            console.log("In RunGL!");
+
+            /* collect all of the javascript from the editors */
+            var allText = "";
+            editors.forEach(function(editor, index){
+              allText += editor.getValue() + "\n";
+            });
+
+            /* we actually need to call main now to
+             * get everything to run */
+            allText += "\nwebGLStart();\n";
+
+            /* create function from selected text and run */
+            var runFunc = new Function(allText);
+            runFunc();
+        };
+    </script>
+    
+</body>
+</html>

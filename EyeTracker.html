@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <!-- meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    
+    <!-- angular.js, jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <!-- angular directives -->
+    <script src="angular/HeaderDirective.js"></script>
+    
+    <title>Hello World</title>
+    
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="site.css"/>
+    
+    <style>
+        h1 {
+            margin-top: 100px;
+        }
+    </style>
+    
+</head>
+<body ng-app="mysite">
+    
+    <!-- defined in angular/HeaderDirective.js -->
+    <site-header></site-header>
+
+    <h1>Mouse Movement using Eyetracking</h1>
+    <h3>CS 490 Project by myself and Michael Orzel</h3> 
+
+    <div id="imageDiv">
+        <img src="images/bj-eyetracking.gif" width="100%"/>
+    </div>
+
+    <p>
+        For Portable Natural User Interface Development
+        (PNUI) we implemented a python version of the
+        OpenCV code <a href="https://picoledelimao.github.io/blog/2017/01/28/eyeball-tracking-for-mouse-control-in-opencv/">here</a>
+        to control your computer mouse using your eye.
+    </p>
+    
+    <h3>How it Works</h3>
+
+    <p>
+        OpenCV has built in <a href="https://docs.opencv.org/3.3.0/d7/d8b/tutorial_py_face_detection.html">haarcascades</a>
+        for face and eye detection, however none for
+        pupil detection, which we use to control the
+        mouse (using the windows api library for python).
+    </p>
+
+    <p>
+        Following the algorithm used by TangoWithCode,
+        we instead use OpenCV's circle detection within
+        the already detected eye area, and select the
+        circle with the darkest overall color
+        as the pupil, since your pupil is entirely black.
+    </p>
+
+    <p>
+        Once you have the location of the pupil,
+        you can calculate how far from the center of
+        the eye it is and move the mouse accordingly,
+        treating the pupil like a joystick.
+    </p>
+
+    <h3>Source</h3>
+    <p>
+        <a href="https://bitbucket.org/orzelm/eyetracking/src/b867c7cab002e21b1039b4e695ab72ec28f46eb0/FinalCode/inertiaMouse2.0.py?at=Master&fileviewer=file-view-default">here</a>
+    </p>
+    
+</body>
+</html>

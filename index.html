@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <!-- meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    
+    <!-- angular.js, jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <!-- angular directives -->
+    <script src="angular/HeaderDirective.js"></script>
+    
+    <title>Hello World</title>
+    
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="site.css"/>
+    
+    <style>
+        #unixSystem {
+            margin-top: 100px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 80%;
+            max-width: 1000px;
+            
+            text-align: center;
+        }
+        
+        #unixSystem img {
+            width: 100%;
+        }
+        
+        @media(max-width: 750px) {
+            #unixSystem {
+                width: 100%;
+                max-width: none;
+            }
+        }
+    </style>
+    
+</head>
+<body ng-app="mysite">
+    <!--<div id="headerDiv">
+        <div id="navBar">
+            <ul id="navList">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="EyeTracker.html">Eye Tracking</a></li>
+                <li><a href="CanvasPhysics.html">HTML5 Canvas</a></li>
+                <li><a href="WindowManager.html">X11 Window Manager</a></li>
+                <li><a href="CS518/index.html">CS518</a></li>
+            </ul>
+        </div>
+    </div>-->
+    <site-header></site-header>
+
+    <figure id="unixSystem">
+        <img src="images/itsaunixsystem.jpg"/>
+        <figcaption>It's a Unix System, I Know This!</figcaption>
+    </figure>
+</body>
+</html>
