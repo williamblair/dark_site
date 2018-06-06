@@ -7,8 +7,12 @@ body {
 	background-color: #000000;
 	color: #00FF00;
     
+    font-family: 'Ubuntu', sans-serif;
+}
+
+body h1 {
     font-family: beefd;
-    font-size: 10px;
+    font-size: 13px;
 }
 
 #headerDiv {
@@ -22,10 +26,12 @@ body {
     height: 60px;
     
     background-color: #000000;
+    
+    font-family: beefd;
 }
 
 #headerDiv a {
-    font-size: 12px;
+    font-size: 11px;
 }
 
 #navList {

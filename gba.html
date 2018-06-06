@@ -18,9 +18,23 @@
     <!-- css -->
     <link rel="stylesheet" type="text/css" href="site.css"/>
     
+    <!-- ubuntu font -->
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"> 
+    
+    <!-- prism syntax hilighting -->
+    <!-- css is modified version of prism-xonokai: https://github.com/PrismJS/prism-themes -->
+    <link href="prism/bj_prism.css" rel="stylesheet"/>
+    
     <style>
         h1 {
             margin-top: 100px;
+            text-align: center;
+        }
+        
+        #gbaLogo {
+            width: 500px;
+            height: 500px;
+            margin: auto;
         }
     </style>
     
@@ -31,6 +45,82 @@
     <site-header></site-header>
 
     <h1>Game Boy Advance Programming</h1>
+    
+    <div id="gbaLogo">
+        <img src="images/gbalogo.jpg" width="100%" height="100%"/>
+    </div>
+    
+    <p>
+        Programming for the GBA is cool because you're working so close to the hardware
+        - it's really just manipulating bits and registers. For example, here's all you
+        need to draw a pixel in the screen:
+    </p>
+    
+    <div><pre><code class="language-clike">
+#define REG_DISPCNT 0x4000000
+#define REG_VRAM    0x6000000
+
+#define MODE_3 0x3
+#define BG2_ENABLE 0x400
+
+#define SCREEN_WIDTH  240
+#define SCREEN_HEIGHT 160
+
+int main(void)
+{
+    int x = SCREEN_WIDTH/2;
+    int y = SCREEN_HEIGHT/2;
+
+    *(unsigned int *)REG_DISPCNT = MODE_3 | BG2_ENABLE;
+    
+    ((unsigned short *)REG_VRAM)[y*SCREEN_WIDTH+x] = 0xFFFF;
+    
+    for(;;){}
+    
+    return 0;
+}</code></pre></div>
+
+    <p>
+    In addition, there's a ton of hardware documentation available - for example
+    <a href="https://problemkaputt.de/gbatek.htm">GBATek</a> as well as programming
+    tutorials out there on the web.
+    </p>
+    
+    <h2>The Environment</h2>
+    <p>
+        There are a couple of different dev kits/compilers to choose from when it comes to the GBA
+    </p>
+    <p>
+        <a href="http://devkitadv.sourceforge.net/">DevkitAdvance</a> - One of the older SDKs to my knowledge
+    </p>
+    <p>
+        <a href="http://www.cameronjtinker.com/post/2013/09/30/GBA-Development-with-HAM-271-SDK-for-Windows.aspx">
+            Ham SDK
+        </a>
+        - Comes with an IDE, and is used in Jonothan Harbor's GBA programming book I've been following along with.
+        I remember it giving me an issue in Windows 7 though. According to the link you should install it in 
+        Windows XP on a virtual machine or whatevs. Also this SDK comes with gfx2gba which I prefer as an image
+        converter.
+    </p>
+    <p>
+        <a href="https://github.com/devkitPro">DevkitPro</a> - A newer and actively maintained SDK which 
+        has libraries for not only the GBA, but the Nintendo DS, Playstation Portable, Wii, Gamecube, GP32,
+        GP2X and the Nintendo Switch. This is the one I have been using, and works in both Windows and Linux.
+        Installation is also super easy.
+    </p>
+    
+    <h2>Running/Debugging</h2>
+    <p>
+        If you have a GBA (which I don't!) You can get a re-writable GBA cartridge to test your games on real 
+        hardware with, but I haven't looked too deep into that. Thus, I've been using an emulator -
+        <a href="https://github.com/visualboyadvance-m/visualboyadvance-m">Visual Boy Advance</a>. Another
+        really good emulator with a bunch of debugging features is <a href="https://problemkaputt.de/gba.htm">
+        no$gba</a>. The reason I've been using Visual Boy Advance is that some (all?) versions support
+        remote debugging via GDB. (TODO - add usage/example/image of remote debugging here!)
+    </p>
+    
+    <!-- testing prism -->
+    <script src="prism/prism.js"></script>
     
 </body>
 </html>
